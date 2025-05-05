@@ -76,7 +76,6 @@ plt.show()
 
 ##################### SES RESULTS EXTRACTION  ###########################################################3
 
-ses_result_files = glob.glob('./SES_results/.xlsm')
 temp = []
 file = './SES_results/MT-T606A-R3.xlsx'
 data_t = pd.read_excel(file, sheet_name="Temperature")
@@ -113,7 +112,7 @@ plt.plot(T606A_measured_data_Temp["distance_m"], T606A_measured_data_Temp["Temp_
 plt.plot(SES_results_606A["length"], SES_results_606A["temperature"],
          label="SES", marker="s", color='blue', fillstyle='none')
 plt.ylim(0, 125)
-plt.xticks([0, 200, 400, 600, 800, 1000])
+# plt.xticks([0, 200, 400, 600, 800, 1000])
 plt.legend(fontsize=10)
 plt.xlabel('Distance from North Portal (m)', fontsize=16)
 plt.ylabel('Temperature(°C)', fontsize=16)
@@ -142,7 +141,7 @@ plt.plot(SES_results_606A["length"], SES_results_606A["flowrate"],
          label="SES", marker="s", color='blue', fillstyle='none')
 # plt.plot(T606A_measured_data_Flow["distance_m"], T606A_measured_data_Flow["flow_rho"],
 #          label="Measured-adjusted", marker="s", color='red', fillstyle='none')
-plt.yticks([50, 75, 100, 125, 150, 175, 200])
+# plt.yticks([50, 75, 100, 125, 150, 175, 200])
 plt.xticks([0, 200, 400, 600, 800, 1000])
 plt.legend(fontsize=10)
 plt.xlabel('Distance from North Portal (m)', fontsize=16)
