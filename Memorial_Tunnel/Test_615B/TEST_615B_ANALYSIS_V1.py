@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import glob
 import itertools
 
-#####################MEASURED HRR VALUES FROM FDS REPO - 'Raw (Calculated)' ########################
+#####################MEASURED HRR VALUES ########################
 
 T615_HRR_data = pd.read_csv(
     './Measured_data/HRR615B.csv', skiprows=[1])
@@ -21,19 +21,9 @@ T615_HRR = T615_HRR_data.iloc[:, [1,2]].astype(
 print(T615_HRR_data.iloc[12:28, 1:3].astype(
     float).mean(axis=0).mean(axis=0) ) # 15 MW used in SES
 
-# Plot 'Time' vs 'Raw (Calculated)'
-plt.figure()
-plt.plot(T615_HRR_data['Time'], T615_HRR, color='black')
-plt.xlabel('Time')
-plt.ylabel('Raw (Calculated)')
-plt.grid(True)
 
-# Add rectangle from x=598.5 to x=1410.5
-plt.axvspan(317, 800, color='gray', alpha=0.3)
 
-plt.show()
-
-#####################MEASURED TEMPERATURE VALUES FROM FDS REPO + AVERAGING TEMP IN EACH LOOP ########################
+#####################MEASURED TEMPERATURE VALUES  ########################
 
 loops = [202, 301, 302, 303, 304, 205, 305,
          306, 307, 207, 208, 209, 211, 213, 214]
@@ -64,7 +54,7 @@ plt.grid(True)
 plt.show()
 
 
-##################### MEASURED FLOW VALUES FROM FDS REPO  #########################################################
+##################### MEASURED FLOW VALUES #########################################################
 
 loops = [214, 209, 208, 207, 307, 305, 304, 302, 301, 202]
 loops_length_ft = [65, 1053, 1399, 1668, 1816, 1982, 2059, 2236, 2373, 2736]

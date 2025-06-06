@@ -21,7 +21,7 @@ print("Average HRR (Based On Efficiency) from iloc[22:51]:", average_hrr_based_e
 print("Average HRR (Raw Calculated) from iloc[22:51]:", average_hrr_raw_calculated)
 print("Average HRR from iloc[22:51]:", average_hrr)
 
-#####################MEASURED TEMPERATURE VALUES FROM FDS REPO + AVERAGING TEMP IN EACH LOOP ########################
+#####################MEASURED TEMPERATURE VALUES  ########################
 
 loops = [202, 301, 302, 303, 304, 205, 305,
          306, 307, 207, 208, 209, 211, 213, 214]
@@ -53,7 +53,7 @@ plt.grid(True)
 plt.show()
 
 
-##################### MEASURED FLOW VALUES FROM FDS REPO  ########################
+##################### MEASURED FLOW VALUES  ########################
 
 loops = [214, 209, 208, 207, 307, 305, 304, 302, 301, 202]
 loops_length_ft = [65, 1053, 1399, 1668, 1816, 1982, 2059, 2236, 2373, 2736]
