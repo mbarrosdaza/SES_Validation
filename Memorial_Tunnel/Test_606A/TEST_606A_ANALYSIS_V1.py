@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import glob
 import itertools
 
-#####################MEASURED HRR VALUES FROM FDS REPO - 'Raw (Calculated)' ########################
+#####################MEASURED HRR VALUES  ########################
 
 # Import the CSV file, skipping the second row (index 1)
 df = pd.read_csv('./Measured_data/HRR606A.csv', skiprows=[1])
@@ -14,7 +14,7 @@ df_filtered = df[df['Time'] <= 2500]
 # Calculate average HRR for both columns 1 and 2 in the filtered data
 average_hrr_based_efficiency = df_filtered.iloc[22:51, 1].astype(float).mean()
 average_hrr_raw_calculated = df_filtered.iloc[22:51, 2].astype(float).mean()
-average_hrr = df_filtered.iloc[22:50, 1:3].astype(
+average_hrr = df.iloc[22:50, 1:3].astype(
     float).mean(axis=0).mean(axis=0) 
 
 print("Average HRR (Based On Efficiency) from iloc[22:51]:", average_hrr_based_efficiency)
@@ -141,7 +141,7 @@ plt.plot(SES_results_606A["length"], SES_results_606A["flowrate"],
          label="SES", marker="s", color='blue', fillstyle='none')
 # plt.plot(T606A_measured_data_Flow["distance_m"], T606A_measured_data_Flow["flow_rho"],
 #          label="Measured-adjusted", marker="s", color='red', fillstyle='none')
-# plt.yticks([50, 75, 100, 125, 150, 175, 200])
+plt.yticks([75, 100, 125, 150, 175, 200])
 plt.xticks([0, 200, 400, 600, 800, 1000])
 plt.legend(fontsize=10)
 plt.xlabel('Distance from North Portal (m)', fontsize=16)
@@ -186,7 +186,7 @@ common_time_values = common_time.reset_index(drop=True)
 fig, ax1 = plt.subplots()
 
 color = 'black'
-ax1.set_xlabel('Time')
+ax1.set_xlabel('Time (s)')
 ax1.set_ylabel('Flow (m³/s)', color=color)
 line1, = ax1.plot(common_time_values.values, avg_flow_common.values, color=color, label='Upstream Flow')
 ax1.set_ylim(-75, 175)
@@ -216,5 +216,8 @@ plt.tight_layout()
 plt.show()
 
 
+###########################exporting results###########################################################
 
-
+SES_results_606A.to_csv('./Outputs/SES_results_606A.csv',index=False)
+T606A_measured_data_Flow.to_csv('./Outputs/T606A_Q.csv',index=False)
+T606A_measured_data_Temp.to_csv('./Outputs/T606A_T.csv',index=False)

@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import glob
 import itertools
 
-#####################MEASURED HRR VALUES FROM FDS REPO - 'Raw (Calculated)' ########################
+#####################MEASURED HRR VALUES ########################
 
 T607_HRR_data = pd.read_csv(
     './Measured_data/HRR607.csv', skiprows=[1])
@@ -21,20 +21,8 @@ T607_HRR = T607_HRR_data.iloc[:, [1,2]].astype(
 print(T607_HRR_data.iloc[28:32, 1:3].astype(
     float).mean(axis=0).mean(axis=0) ) # 15 MW used in SES
 
-# Plot 'Time' vs 'Raw (Calculated)'
-plt.figure()
-plt.plot(T607_HRR_data['Time'], T607_HRR_data, color='black')
-plt.xlabel('Time')
-plt.ylabel('Raw (Calculated)')
-plt.grid(True)
 
-# Add rectangle from x=598.5 to x=1410.5
-plt.axvspan(800, 900, color='gray', alpha=0.3)
-
-plt.show()
-
-
-#####################MEASURED TEMPERATURE VALUES FROM FDS REPO + AVERAGING TEMP IN EACH LOOP ########################
+#####################MEASURED TEMPERATURE VALUES + AVERAGING TEMP IN EACH LOOP ########################
 
 
 loops = [202, 301, 302, 303, 304, 205, 305,
@@ -65,7 +53,7 @@ plt.ylabel('Temperature (°C)')
 plt.grid(True)
 plt.show()
 
-##################### MEASURED FLOW VALUES FROM FDS REPO  #########################################################
+##################### MEASURED FLOW VALUES  #########################################################
 
 loops = [214, 209, 208, 207, 307, 305, 304, 302, 301, 202]
 loops_length_ft = [65, 1053, 1399, 1668, 1816, 1982, 2059, 2236, 2373, 2736]
@@ -85,9 +73,9 @@ plt.show()
 
 ##################### SES RESULTS EXTRACTION  ###########################################################3
 
-ses_result_files = ['./SES_results/MT-T607-R3.xlsx', './SES_results/MT-T607-R4.xlsx']
-naming = ['SES-14 MW', 'SES-20 MW']
-colors = ['blue', 'orange']
+ses_result_files = ['./SES_results/MT-T607-R3.xlsx'] # './SES_results/MT-T607-R4.xlsx']
+naming = ['SES']#, 'SES-20 MW']
+colors = ['blue']#, 'orange']
 all_results = []
 
 for file in ses_result_files:
@@ -122,6 +110,7 @@ for file in ses_result_files:
     print('predicted avg temperature upstream the fire in T607', T607_Temp_avg_upstream)
     print('predicted avg temperature downstream the fire in T607', T607_Temp_avg_downstream)
     a +=1
+    
     
 plt.plot(T607_measured_data_Temp["distance_m"], T607_measured_data_Temp["Temp_C"],
          label="Measured", marker="o", color='black', fillstyle='none')
@@ -191,7 +180,7 @@ common_time_values = common_time.reset_index(drop=True)
 fig, ax1 = plt.subplots()
 
 color = 'black'
-ax1.set_xlabel('Time')
+ax1.set_xlabel('Time (s)')
 ax1.set_ylabel('Flow (m³/s)', color=color)
 line1, = ax1.plot(common_time_values.values, avg_flow_common.values, color=color, label='Upstream Flow')
 ax1.set_xlim(0,1000)
@@ -217,3 +206,16 @@ fig.legend(lines, labels, loc='upper center', bbox_to_anchor=(0.5, 0.02), ncol=2
 
 plt.tight_layout()
 plt.show()
+
+
+###########################exporting results###########################################################
+SES_results_14_MW = combined_results[combined_results['file'] == './SES_results/MT-T607-R3.xlsx']
+SES_results_14_MW = SES_results_14_MW.drop('file', axis=1)
+SES_results_14_MW.to_csv('./Outputs/SES_results_607_14MW.csv',index=False)
+
+SES_results_20_MW = combined_results[combined_results['file'] == './SES_results/MT-T607-R4.xlsx']
+SES_results_20_MW = SES_results_20_MW.drop('file', axis=1)
+SES_results_20_MW.to_csv('./Outputs/SES_results_607_20MW.csv',index=False)
+
+T607_measured_data_Flow.to_csv('./Outputs/T607_Q.csv',index=False)
+T607_measured_data_Temp.to_csv('./Outputs/T607_T.csv',index=False)

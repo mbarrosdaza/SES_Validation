@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import glob
 import itertools
 
-#####################MEASURED HRR VALUES FROM FDS REPO - 'Raw (Calculated)' ########################
+#####################MEASURED HRR VALUES ########################
 
 T611_HRR_data = pd.read_csv(
     './Measured_data/HRR611.csv', skiprows=[1])
@@ -21,17 +21,7 @@ T611_HRR = T611_HRR_data.iloc[:, [1,2]].astype(
 print(T611_HRR_data.iloc[12:30, 1:3].astype(
     float).mean(axis=0).mean(axis=0) ) # 15 MW used in SES
 
-# Plot 'Time' vs 'Raw (Calculated)'
-plt.figure()
-plt.plot(T611_HRR_data['Time'], T611_HRR, color='black')
-plt.xlabel('Time')
-plt.ylabel('Raw (Calculated)')
-plt.grid(True)
 
-# Add rectangle from x=598.5 to x=1410.5
-plt.axvspan(315, 830, color='gray', alpha=0.3)
-
-plt.show()
 
 #####################MEASURED TEMPERATURE VALUES FROM FDS REPO + AVERAGING TEMP IN EACH LOOP ########################
 
@@ -71,7 +61,7 @@ loops_length_ft = [65, 1053, 1399, 1668, 1816, 1982, 2059, 2236, 2373, 2736]
 loops_length_m = [ft * 0.3048 for ft in loops_length_ft]
 Q611_Flow = pd.read_csv('./Measured_data/QP611.csv')
 Q611_Flow = Q611_Flow.drop(index=0)
-T611_measured_Flow = abs(Q611_Flow.iloc[29:32, 1:].astype(float).mean(axis=0)).tolist()
+T611_measured_Flow = abs(Q611_Flow.iloc[12:30, 1:].astype(float).mean(axis=0)).tolist()
 T611_measured_data_Flow = pd.DataFrame(
     {"loop": loops, "distance_m": loops_length_m, "flow": T611_measured_Flow})
 
@@ -107,7 +97,7 @@ SES_results_611 = pd.DataFrame({"length": SES_segment_length['distance'].tolist(
 plt.plot(T611_measured_data_Temp["distance_m"], T611_measured_data_Temp["Temp_C"],
          label="Measured", marker="o", color='black', fillstyle='none')
 plt.plot(SES_results_611["length"], SES_results_611["temperature"],
-         label="SES-20MW", marker="s", color='blue', fillstyle='none')
+         label="SES", marker="s", color='blue', fillstyle='none')
 # plt.ylim(0, 250)
 # plt.xticks([0, 200, 400, 600, 800, 1000])
 plt.legend(fontsize=10)
@@ -134,7 +124,7 @@ print('measured avg temperature downstream the fire in T611', T611_Temp_avg_down
 plt.plot(T611_measured_data_Flow["distance_m"], T611_measured_data_Flow["flow"],
          label="Measured", marker="o", color='black', fillstyle='none')
 plt.plot(SES_results_611["length"], SES_results_611["flowrate"],
-         label="SES-50MW", marker="s", color='blue', fillstyle='none')
+         label="SES", marker="s", color='blue', fillstyle='none')
 
 plt.legend(fontsize=10)
 plt.xlabel('Distance from North Portal (m)', fontsize=16)
@@ -179,7 +169,7 @@ common_time_values = common_time.reset_index(drop=True)
 fig, ax1 = plt.subplots()
 
 color = 'black'
-ax1.set_xlabel('Time')
+ax1.set_xlabel('Time (s)')
 ax1.set_ylabel('Flow (m³/s)', color=color)
 line1, = ax1.plot(common_time_values.values, avg_flow_common.values, color=color, label='Upstream Flow')
 ax1.set_xlim(0,1000)
@@ -205,4 +195,13 @@ fig.legend(lines, labels, loc='upper center', bbox_to_anchor=(0.5, 0.02), ncol=2
 
 plt.tight_layout()
 plt.show()
+
+###########################exporting results###########################################################
+
+SES_results_611.to_csv('./Outputs/SES_results_611.csv',index=False)
+T611_measured_data_Flow.to_csv('./Outputs/T611_Q.csv',index=False)
+T611_measured_data_Temp.to_csv('./Outputs/T611_T.csv',index=False)
+
+T611_measured_data_Flow.to_csv('./Outputs/T611_Q.csv',index=False)
+T611_measured_data_Temp.to_csv('./Outputs/T611_T.csv',index=False)
 
